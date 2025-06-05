@@ -1,8 +1,8 @@
 import type { TextlintRuleModule } from "@textlint/types";
 import { split } from 'sentence-splitter';
 import { PythonShell } from "python-shell";
-import { groupingErrCharacter } from "./utils";
-import { JSONParsed } from "./type";
+import { groupingErrCharacter, sumJustBeforeSplitTextLength } from "./utils";
+import { JSONParsed, errTypeDescription } from "./type";
 
 export interface Options {
     // If node's text includes allowed text, does not report.
@@ -15,6 +15,9 @@ const report: TextlintRuleModule<Options> = (context) => {
     return {
         [Syntax.Str]: async function(node) {
             const text = getSource(node); // 文字列を取得
+            if (text === '') {
+                return;
+            }
             // モデルが長文だと精度が下がる(テキストから2つ以上の誤用を検知するように学習されていない)ため分割する。
             const splitTexts = split(text);
             await Promise.all(splitTexts.map(async (splitText, index) => {
@@ -40,10 +43,11 @@ const report: TextlintRuleModule<Options> = (context) => {
                         }
                         // char_indexの連番ごとにグループ化した上でruleError発行
                         groupingErrCharacter(errCharacter).forEach(function(item) {
-                            const justBeforeSplitTextLength = index !== 0 ? splitTexts[index - 1].raw.length : 0;
+                            const justBeforeSplitTextLength = sumJustBeforeSplitTextLength(splitTexts, index);
                             const rangeStartIndex = justBeforeSplitTextLength + item[0].char_index;
                             const rangeEndIndex = justBeforeSplitTextLength + item[item.length - 1].char_index;
-                            const ruleError = new RuleError("Found japanese typo.", {
+                        
+                            const ruleError = new RuleError(`日本語の誤用、${errTypeDescription(item[0].err_type)}が見つかりました。`, {
                                 padding: locator.range([
                                     rangeStartIndex,
                                     // RuleErrorのpaddingはstartIndexとEndIndexが同じだとエラーになる

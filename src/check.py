@@ -23,7 +23,7 @@ def check(in_text: str) -> str:
             result.append({
                 'char': chara,
                 'char_index': index,
-                'err_type_index' : int(err_type_ind),
+                'err_type' : int(err_type_ind),
                 'err_name': err_name,
             })
         
