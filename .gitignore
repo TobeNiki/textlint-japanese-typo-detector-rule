@@ -33,5 +33,5 @@ npm-debug.log
 
 # Publish src/ instead lib/
 /lib
-
-/model
+/src/model
+.DS_Store
