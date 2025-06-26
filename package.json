@@ -32,7 +32,7 @@
     "typescript": "^5.3.3",
     "typescript-eslint": "^8.33.1"
   },
-  "name": "my-rule",
+  "name": "textlint-japanese-typo-detector-rule",
   "description": "test",
   "directories": {
     "test": "test"

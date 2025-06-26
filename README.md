@@ -1,12 +1,15 @@
-# my-rule
+#　textlint-japanese-typo-detector-rule
 
-test
+日本語の漢字間違いなどを含む誤字脱字を検出するルール
+
+japanese-typo-detector-roberta-base モデルを利用して作成している関係でpythonのインストールが必要です。
+https://huggingface.co/recruit-jp/japanese-typo-detector-roberta-base/tree/main
 
 ## Install
 
 Install with [npm](https://www.npmjs.com/):
 
-    npm install my-rule
+    npm install textlint-japanese-typo-detector-rule
 
 ## Usage
 
@@ -15,7 +18,7 @@ Via `.textlintrc.json`(Recommended)
 ```json
 {
     "rules": {
-        "my-rule": true
+        "textlint-japanese-typo-detector-rule": true
     }
 }
 ```
@@ -23,7 +26,7 @@ Via `.textlintrc.json`(Recommended)
 Via CLI
 
 ```
-textlint --rule my-rule README.md
+textlint --rule textlint-japanese-typo-detector-rule README.md
 ```
 
 ### Build
